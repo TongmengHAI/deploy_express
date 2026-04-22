@@ -3,7 +3,18 @@ import cors from 'cors';
 import pool from './db.js';
 
 const app = express();
-app.use(cors());
+
+// --- CORS Configuration ---
+const corsOptions = {
+  origin: [
+      'https://reactjs-c1k2.onrender.com', 
+      'http://localhost:5173'
+    ],  
+  optionsSuccessStatus: 200 
+};
+app.use(cors(corsOptions));
+// --------------------------
+
 app.use(express.json());
 
 // GET: Fetch all users
@@ -30,4 +41,8 @@ app.post('/users', async (req, res) => {
   }
 });
 
-app.listen(5000, () => console.log("🚀 Backend running on http://localhost:5000"));
+// Use Render's dynamic port or default to 5000
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Backend running on port ${PORT}`);
+});
